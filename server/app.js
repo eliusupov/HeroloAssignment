@@ -28,6 +28,4 @@ app.use('/user', user);
 app.use('/message', message);
 app.use(apiErrorHandler);
 
-app.listen(3000, () => {
-	console.log(`Server is up and running 3000`);
-});
+app.listen(process.env.PORT || 3000);
