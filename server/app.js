@@ -29,12 +29,9 @@ app.use('/api/user', user);
 app.use('/api/message', message);
 app.use(apiErrorHandler);
 
-// Serve static assets in production
-if (process.env.NODE_ENV === 'production') {
-	app.use(express.static(path.join(__dirname, 'dist')));
-	app.get('*', (req, res) => {
-		res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-	});
-}
+app.use(express.static(path.join(__dirname, 'dist')));
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 app.listen(process.env.PORT || 3000);
