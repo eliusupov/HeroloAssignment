@@ -34,7 +34,7 @@ export const checkEmail = email => async () => {
 	if (!email) return false;
 	let canCreate = false;
 	try {
-		const response = await axios.post('http://localhost:3000/user/checkEmail', { email });
+		const response = await axios.post('/user/checkEmail', { email });
 		const { data } = response;
 		canCreate = data;
 	} catch (err) {
@@ -45,7 +45,7 @@ export const checkEmail = email => async () => {
 
 export const userCreate = ({ email, password }, history) => async dispatch => {
 	try {
-		const response = await axios.put('http://localhost:3000/user/create', { email, password });
+		const response = await axios.put('/user/create', { email, password });
 		const { data } = response;
 		const { token } = data;
 		axios.defaults.headers.authorization = `Bearer ${token}`;
@@ -58,7 +58,7 @@ export const userCreate = ({ email, password }, history) => async dispatch => {
 
 export const userLogin = ({ email, password }, history) => async dispatch => {
 	try {
-		const response = await axios.post('http://localhost:3000/user/login', { email, password });
+		const response = await axios.post('/user/login', { email, password });
 		const { data } = response;
 		const { token } = data;
 		axios.defaults.headers.authorization = `Bearer ${token}`;
@@ -80,7 +80,7 @@ export const userLogout = history => async dispatch => {
 
 export const userGetRecipients = () => async dispatch => {
 	try {
-		const response = await axios.get('http://localhost:3000/user/recipients');
+		const response = await axios.get('/user/recipients');
 		const { data } = response;
 		const { recipients } = data;
 		dispatch(setRecipients(recipients));

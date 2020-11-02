@@ -9,7 +9,7 @@ const setMessageToDelete = messageToDelete => ({ messageToDelete, type: actionTy
 
 export const sendMessage = message => async () => {
 	try {
-		await axios.put('http://localhost:3000/message', { ...message });
+		await axios.put('/message', { ...message });
 		openSuccessNotification('Success!', 'Message was sent');
 	} catch (err) {
 		openErrorNotification('Error', 'Error in sending a message');
@@ -18,7 +18,7 @@ export const sendMessage = message => async () => {
 
 export const getMessages = id => async dispatch => {
 	try {
-		const response = await axios.get(`http://localhost:3000/message/${id}`);
+		const response = await axios.get(`/message/${id}`);
 		const { data: messages } = response;
 		dispatch(setMessages(messages));
 	} catch (err) {
@@ -28,7 +28,7 @@ export const getMessages = id => async dispatch => {
 
 export const deleteMessage = (id, messageType) => async dispatch => {
 	try {
-		const response = await axios.delete(`http://localhost:3000/message/${id}`);
+		const response = await axios.delete(`/message/${id}`);
 		const { data } = response;
 		const { _id } = data;
 		dispatch(setDeletedMessage(_id, messageType));
