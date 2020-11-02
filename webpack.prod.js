@@ -8,9 +8,9 @@ const autoprefixer = require('autoprefixer');
 
 module.exports = {
 	entry: {
-		app: './index.js',
+		app: './src',
 	},
-	devtool: 'hidden-source-map',
+	devtool: 'inline-source-map',
 	optimization: {
 		minimizer: [new UglifyJsPlugin({ sourceMap: false }), new OptimizeCSSAssetsPlugin({})],
 	},
