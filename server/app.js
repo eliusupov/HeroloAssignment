@@ -16,20 +16,13 @@ mongoose.Promise = global.Promise;
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
+app.use(express.static(path.join(__dirname, 'dist')));
+
 app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
 	res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT');
 	res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization ');
 	next();
-});
-
-app.use(express.static(path.join(__dirname, 'dist')));
-app.get('/', (req, res) => {
-	res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
-
-app.get('/*', (req, res) => {
-	res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 app.use(bodyParser.json());
@@ -38,4 +31,16 @@ app.use('/api/user', user);
 app.use('/api/message', message);
 app.use(apiErrorHandler);
 
-app.listen(process.env.PORT || 3000);
+app.get('/', (req, res) => {
+	res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
+app.get('/*', (req, res) => {
+	res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
+app.listen(process.env.PORT || 3000, () => {
+	app.get('*', (req, res) => {
+		res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+	});
+});
