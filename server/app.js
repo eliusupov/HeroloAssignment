@@ -29,17 +29,19 @@ app.use('/api/user', user);
 app.use('/api/message', message);
 app.use(apiErrorHandler);
 
-
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
-	app.use(express.static('../dist'));
+	app.use(express.static(path.join(__dirname, 'dist')));
 }
 
-app.listen(process.env.PORT || 3000, () => {
-	app.get('*', (req, res) => {
-		if (process.env.NODE_ENV === 'production') {
-			res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
-		}
-	});
+app.get('/', (req, res) => {
+	if (process.env.NODE_ENV === 'production') {
+		res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+	}
 });
 
+app.get('/*', (req, res) => {
+	res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
+app.listen(process.env.PORT || 3000);
