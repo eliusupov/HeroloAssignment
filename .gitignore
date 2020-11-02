@@ -1,5 +1,4 @@
 node_modules
 .idea
 assets
-dist
 package-lock.json
