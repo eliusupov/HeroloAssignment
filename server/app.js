@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const apiErrorHandler = require('./error/apiErrorHandler');
@@ -24,8 +25,21 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use('/user', user);
-app.use('/message', message);
+app.use('/api/user', user);
+app.use('/api/message', message);
 app.use(apiErrorHandler);
 
-app.listen(process.env.PORT || 3000);
+
+// Serve static assets in production
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static('../dist'));
+}
+
+app.listen(process.env.PORT || 3000, () => {
+	app.get('*', (req, res) => {
+		if (process.env.NODE_ENV === 'production') {
+			res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
+		}
+	});
+});
+

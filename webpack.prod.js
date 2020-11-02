@@ -1,11 +1,11 @@
 const webpack = require('webpack');
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const autoprefixer = require("autoprefixer");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 
 module.exports = {
 	entry: {
@@ -13,43 +13,40 @@ module.exports = {
 	},
 	devtool: 'hidden-source-map',
 	optimization: {
-		minimizer: [
-			new UglifyJsPlugin({sourceMap: false}),
-			new OptimizeCSSAssetsPlugin({})
-		]
+		minimizer: [new UglifyJsPlugin({ sourceMap: false }), new OptimizeCSSAssetsPlugin({})],
 	},
 	plugins: [
-		new CleanWebpackPlugin(['dist']),
+		new CleanWebpackPlugin(),
 		new HtmlWebpackPlugin({
 			template: './index.html',
 			hash: true,
 		}),
 		new webpack.DefinePlugin({
-			'process.env.NODE_ENV': JSON.stringify('production')
+			'process.env.NODE_ENV': JSON.stringify('production'),
 		}),
 		new MiniCssExtractPlugin({
-			filename: "[name]_[hash].css",
-			chunkFilename: "[id]_[hash].css"
+			filename: '[name]_[hash].css',
+			chunkFilename: '[id]_[hash].css',
 		}),
 		new webpack.LoaderOptionsPlugin({
-			options: {postcss: [autoprefixer()]}
+			options: { postcss: [autoprefixer()] },
 		}),
 	],
 	output: {
 		filename: '[name]_[hash].js',
 		path: path.resolve(__dirname, 'dist'),
-		publicPath: "/",
+		publicPath: '/',
 	},
 	module: {
 		rules: [
 			{
 				test: /\.(js|jsx)$/,
 				exclude: /(node_modules)/,
-				loader: "babel-loader",
+				loader: 'babel-loader',
 			},
 			{
 				test: /\.json$/,
-				loader: 'json-loader'
+				loader: 'json-loader',
 			},
 			{ test: /bootstrap\/dist\/js\/umd\//, loader: 'imports?jQuery=jquery' },
 			{
@@ -57,10 +54,12 @@ module.exports = {
 				use: [
 					MiniCssExtractPlugin.loader,
 					{
-						loader: "css-loader",
+						loader: 'css-loader',
 						options: {
-							modules: false,
-							localIdentName: '[local]__[hash:base64:5]',
+							modules: {
+								auto: true,
+								localIdentName: '[local]__[hash:base64:5]',
+							},
 						}
 					},
 					{
@@ -75,7 +74,7 @@ module.exports = {
 					{
 						loader: 'file-loader',
 						options: {
-							name: "img/[name].[ext]"
+							name: 'img/[name].[ext]',
 						},
 					},
 				],
@@ -87,10 +86,10 @@ module.exports = {
 					options: {
 						name: './[hash].[ext]',
 						publicPath: 'fonts/',
-						outputPath: 'fonts/'
-					}
-				}
-			}
-		]
-	}
+						outputPath: 'fonts/',
+					},
+				},
+			},
+		],
+	},
 };
