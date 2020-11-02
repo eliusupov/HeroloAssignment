@@ -22,15 +22,15 @@ module.exports = {
 			'process.env.NODE_ENV': JSON.stringify('production'),
 		}),
 		new MiniCssExtractPlugin({
-			filename: '[name]_[hash].css',
-			chunkFilename: '[id]_[hash].css',
+			filename: '[name].css',
+			chunkFilename: '[id].css',
 		}),
 		new webpack.LoaderOptionsPlugin({
 			options: { postcss: [autoprefixer()] },
 		}),
 	],
 	output: {
-		filename: '[name]_[hash].js',
+		filename: '[name].js',
 		path: path.resolve(__dirname, 'dist'),
 		publicPath: '/',
 	},
