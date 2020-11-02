@@ -19,7 +19,6 @@ module.exports = {
 		new CleanWebpackPlugin(),
 		new HtmlWebpackPlugin({
 			template: './index.html',
-			hash: true,
 		}),
 		new webpack.DefinePlugin({
 			'process.env.NODE_ENV': JSON.stringify('production'),
