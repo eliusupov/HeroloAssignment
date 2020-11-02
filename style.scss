@@ -1,0 +1,42 @@
+html,
+body,
+#root {
+	min-height: 100vh;
+	min-width: 100vw;
+	margin: 0;
+	font-family: 'Roboto', sans-serif;
+	color: #333333;
+}
+
+#root {
+	overflow-x: hidden;
+	background: #8945a1;
+}
+
+.ant-btn {
+	border-color: #9a58b2;
+
+	&:hover, &:focus, &:active {
+		border-color: #8945a1;
+		color: #8945a1;
+	}
+}
+
+.ant-btn-primary {
+	background-color: #9a58b2;
+	border-color: #9a58b2;
+
+	&:hover, &:focus, &:active {
+		background-color: #8945a1;
+		border-color: #8945a1;
+		color: #ffffff;
+	}
+}
+
+a {
+	color: #9a58b2;
+
+	&:hover {
+		color: #8945a1;
+	}
+}
