@@ -32,15 +32,15 @@ app.use('/api/message', message);
 app.use(apiErrorHandler);
 
 app.get('/', (req, res) => {
-	res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+	res.sendFile(path.join(__dirname, '../dist', 'index.html'));
 });
 
 app.get('/*', (req, res) => {
-	res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+	res.sendFile(path.join(__dirname, '../dist', 'index.html'));
 });
 
 app.listen(process.env.PORT || 3000, () => {
 	app.get('*', (req, res) => {
-		res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+		res.sendFile(path.join(__dirname, '../dist', 'index.html'));
 	});
 });
