@@ -33,6 +33,16 @@ body,
 	}
 }
 
+.ant-input-affix-wrapper-focused, .ant-select-focused, .ant-select-selector, .ant-input {
+	&:hover, &:focus, &:active {
+		border-color: #c072db;
+	}
+}
+
+.ant-select-selector {
+	border-color: #c072db !important;
+}
+
 a {
 	color: #9a58b2;
 

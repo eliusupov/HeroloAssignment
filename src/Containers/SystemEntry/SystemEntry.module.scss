@@ -26,3 +26,27 @@
 		}
 	}
 }
+
+@media screen and (max-width: 1200px) {
+	.login > .loginForm {
+		width: 40%;
+	}
+}
+
+@media screen and (max-width: 1024px) {
+	.login > .loginForm {
+		width: 50%;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.login > .loginForm {
+		width: 60%;
+	}
+}
+
+@media screen and (max-width: 375px) {
+	.login > .loginForm {
+		width: 70%;
+	}
+}
