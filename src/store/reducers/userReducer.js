@@ -1,4 +1,3 @@
-import axios from 'axios';
 import moment from 'moment';
 import jwtDecode from 'jwt-decode';
 import * as actionTypes from '../actions/actionTypes';

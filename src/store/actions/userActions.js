@@ -36,7 +36,8 @@ export const checkEmail = email => async () => {
 	try {
 		const response = await axios.post('/user/checkEmail', { email });
 		const { data } = response;
-		canCreate = data;
+		const { isEmailAvail } = data;
+		canCreate = isEmailAvail;
 	} catch (err) {
 		openErrorNotification('Error', 'Something went wrong');
 	}

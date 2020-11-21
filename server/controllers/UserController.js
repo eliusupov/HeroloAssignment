@@ -50,7 +50,7 @@ exports.userCheckEmailAvail = async (req, res, next) => {
 	const { email } = req.body;
 	try {
 		const user = await User.findOne({ email });
-		res.status(200).json(!user);
+		res.status(200).json({ isEmailAvail: user == null });
 	} catch (err) {
 		return next(err);
 	}
@@ -58,7 +58,7 @@ exports.userCheckEmailAvail = async (req, res, next) => {
 
 exports.userGetRecipients = async (req, res, next) => {
 	try {
-		const recipients = await User.find({ _id: { $nin: req.userId }});
+		const recipients = await User.find({ _id: { $nin: req.userId } });
 		res.status(200).json({
 			recipients: recipients.map(user => ({ _id: user._id, email: user.email })),
 		});
