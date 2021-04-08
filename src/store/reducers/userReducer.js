@@ -26,31 +26,10 @@ const setUserData = (state, action) => {
 	};
 };
 
-const setUserLogout = state => {
-	return {
-		...state,
-		userId: '',
-		token: '',
-		email: '',
-		tokenExpire: '',
-	};
-};
-
-const setRecipients = (state, action) => {
-	return {
-		...state,
-		recipients: action.recipients,
-	};
-};
-
 const userReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case actionTypes.SET_USER_DATA:
 			return setUserData(state, action);
-		case actionTypes.SET_USER_LOGOUT:
-			return setUserLogout(state, action);
-		case actionTypes.SET_RECIPIENTS:
-			return setRecipients(state, action);
 		default:
 			return state;
 	}

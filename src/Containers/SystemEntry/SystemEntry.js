@@ -1,99 +1,144 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import axios from 'axios';
 import { PropTypes } from 'prop-types';
-import { Form, Input, Button, Checkbox } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
-
-import * as actions from '../../store/actions/actions';
-
+import { Form, Input, Checkbox, Space } from 'antd';
+import cn from 'classnames';
+import { downloadURI } from '../../Utils/helper';
 import classes from './SystemEntry.module.scss';
 
 const systemEntry = props => {
-	const [userAlreadyExist, setUserAlreadyExist] = useState(false);
-	const [incorrectLogin, setIncorrectLogin] = useState(false);
-	const { checkEmail, userCreate, userLogin } = actions;
-	const { history } = props;
-	const { location } = history;
-	const { pathname } = location;
-	const dispatch = useDispatch();
+	const [form] = Form.useForm();
+	const [changeCheckboxStyle, setChangeCheckboxStyle] = useState(false);
 
-	const onSubmitRegister = async values => {
-		setUserAlreadyExist(false);
-		const canCreate = await dispatch(checkEmail(values.email));
-		setUserAlreadyExist(!canCreate);
-		if (canCreate) {
-			await dispatch(userCreate(values, history));
+	const getId = async formValues => {
+		try {
+			const res = await axios.post('/data', formValues);
+			const { data } = res;
+			const { id } = data;
+
+			return id;
+		} catch (err) {}
+	};
+
+	const getFile = async id => {
+		try {
+			const res = await axios.get(`/file/?id=${id}`);
+			const { data } = res;
+			const { link } = data;
+			if (link) {
+				// downloadURI(link)
+				window.open(link, '_blank');
+			} else {
+				throw new Error();
+			}
+		} catch (err) {
+			if (err && err.response && err.response.status === 404) {
+				window.location.href = 'https://joonko.co/';
+			}
 		}
 	};
 
-	const onSubmitLogin = async values => {
-		if (incorrectLogin) setIncorrectLogin(false);
-		const login = await dispatch(userLogin(values, history));
-		if (login === false) setIncorrectLogin(!login);
+	const formSubmit = async formValues => {
+		try {
+			const id = await getId(formValues);
+
+			if (id != null) {
+				await getFile(id);
+				form.resetFields();
+			}
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
-	let submitFuntion = onSubmitRegister;
-	if (pathname === '/login' || pathname === '/') {
-		submitFuntion = onSubmitLogin;
-	}
-
 	return (
-		<div className={classes.login}>
+		<div className={classes.systemEntry}>
+			<div className={classes.infoContainer}>
+				<h2>The Future of Work in the now: Why you should Become Remote-ready</h2>
+				<h3>Infographic</h3>
+				<p>
+					The results are in, and the verdict? Remote is here to stay. Thanks to a global pandemic companies
+					have had to reevaluate the power of distributed workforces and we’ve put together all the reasons
+					why going remote is the right move to make. In this infographics, you’ll see:
+				</p>
+				<div>
+					<p>• How remote work broadens the talent pool</p>
+					<p>• The productivity results behind distributed teams</p>
+					<p>• An increase in diversity as a result of remote recruitment</p>
+					<p>• Money saved on operational costs and salary</p>
+				</div>
+				<p>
+					negotiations What better time to refresh your strategy than on the brink of a whole new world? Dig
+					into this list of recruiting methodologies and adjust your sails for the future!
+				</p>
+			</div>
 			<Form
 				name="normal_login"
-				className={classes.loginForm}
+				className={classes.form}
 				initialValues={{ remember: true }}
-				onFinish={submitFuntion}
+				onFinish={formSubmit}
+				size="small"
 			>
-				{(pathname === '/login' || pathname === '/') && <h3>Login to Message App</h3>}
-				{pathname === '/register' && <h3>Register to Message App</h3>}
+				<h3>Want to get the full version?</h3>
+				<h4>Fill in the form below:</h4>
+				<Space size="middle" direction="vertical">
+					<Form.Item name="name" rules={[{ required: true, message: 'Please input your name' }]}>
+						<Input placeholder="Full name" />
+					</Form.Item>
+					<Form.Item
+						name="company_name"
+						rules={[{ required: true, message: 'Please input your company name' }]}
+					>
+						<Input placeholder="Company name" />
+					</Form.Item>
+					<Form.Item name="phone" rules={[{ required: true, message: 'Please input your phone' }]}>
+						<Input placeholder="Phone" type="number" />
+					</Form.Item>
+					<Form.Item
+						name="email"
+						rules={[
+							{ required: true, message: 'Please input your email' },
+							{ type: 'email', message: 'Invalid, please try again' },
+						]}
+					>
+						<Input placeholder="Work email" />
+					</Form.Item>
+				</Space>
+				<button type="submit">
+					<span>Download now >></span>
+				</button>
 				<Form.Item
-					name="email"
+					name="isAgreementAccepted"
+					valuePropName="checked"
+					className={cn(changeCheckboxStyle && classes.err)}
 					rules={[
-						{ required: true, message: 'Please input your Email!' },
-						{ type: 'email', message: 'must be a valid email' },
+						{
+							required: true,
+							type: 'boolean',
+							transform: value => value || null,
+							validator: (_, value) => {
+								if (value) {
+									if (changeCheckboxStyle) {
+										setChangeCheckboxStyle(false);
+									}
+									return Promise.resolve();
+								}
+								if (!value) {
+									setChangeCheckboxStyle(true);
+									return Promise.reject('');
+								}
+								return Promise.reject('');
+							},
+						},
 					]}
 				>
-					<Input prefix={<UserOutlined />} placeholder="Email" />
+					<Checkbox>
+						<span>
+							I agree to the privacy policy including for Joonko to use my contact details to contact me
+							for marketing purposes.
+						</span>
+					</Checkbox>
 				</Form.Item>
-				<Form.Item
-					name="password"
-					rules={[
-						{ required: true, message: 'Please input your Password!' },
-						{ min: 5, max: 12, message: 'Must be minimum of 5 and maximum 12 chars' },
-					]}
-				>
-					<Input prefix={<LockOutlined />} type="password" placeholder="Password" />
-				</Form.Item>
-				{pathname === '/register' && userAlreadyExist && (
-					<div className={classes.err}>Email already exists in the system</div>
-				)}
-				{(pathname === '/login' || pathname === '/') && incorrectLogin && (
-					<div className={classes.err}>Email or password are incorrect</div>
-				)}
-				<Form.Item>
-					{(pathname === '/login' || pathname === '/') && (
-						<Button type="primary" htmlType="submit">
-							<span>Log in</span>
-						</Button>
-					)}
-					{pathname === '/register' && (
-						<Button type="primary" htmlType="submit">
-							<span>Register</span>
-						</Button>
-					)}
-				</Form.Item>
-				{pathname === '/register' && (
-					<Link to="/login">
-						<span>Login now!</span>
-					</Link>
-				)}
-				{(pathname === '/login' || pathname === '/') && (
-					<Link to="/register">
-						<span>Register now!</span>
-					</Link>
-				)}
 			</Form>
 		</div>
 	);

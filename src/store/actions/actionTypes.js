@@ -3,8 +3,3 @@ export const SET_USER_DATA = 'SET_USER_DATA';
 export const SET_USER_CART = 'SET_USER_CART';
 export const SET_RECIPIENTS = 'SET_RECIPIENTS';
 export const SET_USER_LOGOUT = 'SET_USER_LOGOUT';
-
-// Message
-export const SET_MESSAGES = 'SET_MESSAGES';
-export const SET_DELETED_MESSAGE = 'SET_DELETED_MESSAGE';
-export const SET_MESSAGE_TO_DELETE = 'SET_MESSAGE_TO_DELETE';
